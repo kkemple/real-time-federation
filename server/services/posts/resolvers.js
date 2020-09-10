@@ -9,29 +9,32 @@ module.exports = {
 
   Post: {
     author(post) {
-      return { __typename: "Author", id: post.authorId };
+      return { __typename: "Author", id: post.authorID };
     }
   },
 
   Query: {
-    getPost(root, { id }, context, info) {
+    post(root, { id }, context, info) {
       return posts.find(post => post.id === id);
     },
-    getPosts(root, args, context, info) {
+    posts(root, args, context, info) {
       return posts;
     }
   },
 
   Mutation: {
-    addPost(root, { authorId, content, title }, context, info) {
+    addPost(root, { authorID, content, title }, { redis }, info) {
+      const postID = posts.length + 1;
       const post = {
-        authorId,
+        authorID,
         content,
         title,
-        id: posts.length + 1,
+        id: postID,
         publishedAt: new Date().toISOString()
       };
+
       posts.push(post);
+      redis.xadd("graphql_stream", "*", "postAdded", postID);
 
       return post;
     }

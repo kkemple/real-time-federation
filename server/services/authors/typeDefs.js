@@ -7,7 +7,7 @@ module.exports = gql`
   }
 
   extend type Query {
-    getAuthor(id: ID!): Author
-    getAuthors: [Author]
+    author(id: ID!): Author
+    authors: [Author]
   }
 `;

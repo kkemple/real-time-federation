@@ -3,15 +3,15 @@ const authors = require("./data");
 module.exports = {
   Author: {
     __resolveReference(reference, context, info) {
-      return authors.find(author => author.id === reference.id);
+      return authors.find(author => author.id === parseInt(reference.id));
     }
   },
 
   Query: {
-    getAuthor(parent, { id }, context, info) {
+    author(parent, { id }, context, info) {
       return authors.find(author => author.id === id);
     },
-    getAuthors(parent, args, context, info) {
+    authors(parent, args, context, info) {
       return authors;
     }
   }

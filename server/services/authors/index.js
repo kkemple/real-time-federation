@@ -1,13 +1,13 @@
+require("dotenv").config();
 const { ApolloServer } = require("apollo-server");
 const { buildFederatedSchema } = require("@apollo/federation");
 
-const typeDefs = require("./typeDefs");
 const resolvers = require("./resolvers");
+const typeDefs = require("./typeDefs");
 
 const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
-
 const server = new ApolloServer({ schema });
 
-server.listen(4001).then(({ url }) => {
+server.listen(process.env.AUTHORS_SERVICE_PORT).then(({ url }) => {
   console.log(`🚀 Authors service ready at ${url}`);
 });
