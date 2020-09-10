@@ -1,15 +1,26 @@
 require("dotenv").config();
 const { ApolloGateway } = require("@apollo/gateway");
 const { ApolloServer } = require("apollo-server");
+const httpServer = require("http").createServer();
+const io = require("socket.io")(httpServer);
 const Redis = require("ioredis");
 
 require("./lib/redis/streamTransformers");
 const { subscribeStream } = require("./lib/redis/streamSubscription");
 
+/* Socket.io */
+
+httpServer.listen(5000);
+
 /* Redis */
 
 const redis = new Redis(process.env.REDIS_PORT, process.env.REDIS_HOST);
-subscribeStream(redis, "graphql_stream", console.log);
+
+subscribeStream(redis, "graphql_stream", results => {
+  results.forEach(({ id: redisID, data: { event, id } }) => {
+    io.emit(event, { id, timestamp: redisID.split("-")[0] });
+  });
+});
 
 /* Apollo */
 

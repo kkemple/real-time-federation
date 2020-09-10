@@ -8,7 +8,7 @@ async function subscribeStream(redis, stream, listener) {
       "BLOCK",
       "1000",
       "COUNT",
-      1000,
+      100,
       "STREAMS",
       stream,
       lastID
@@ -18,8 +18,6 @@ async function subscribeStream(redis, stream, listener) {
     if (!reply) {
       continue;
     }
-
-    // console.log(JSON.stringify(reply, null, 2));
 
     const results = reply[stream];
     const { length } = results;
