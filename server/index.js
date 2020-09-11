@@ -1,15 +1,19 @@
 require("dotenv").config();
+
+const http = require("http");
+
 const { ApolloGateway } = require("@apollo/gateway");
 const { ApolloServer } = require("apollo-server");
-const httpServer = require("http").createServer();
-const io = require("socket.io")(httpServer);
 const Redis = require("ioredis");
+const socketIo = require("socket.io");
 
 require("./lib/redis/streamTransformers");
 const { subscribeStream } = require("./lib/redis/streamSubscription");
 
 /* Socket.io */
 
+const httpServer = http.createServer();
+const io = socketIo(httpServer);
 httpServer.listen(5000);
 
 /* Redis */

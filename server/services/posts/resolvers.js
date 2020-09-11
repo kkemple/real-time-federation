@@ -15,7 +15,7 @@ module.exports = {
 
   Query: {
     post(root, { id }, context, info) {
-      return posts.find(post => post.id === id);
+      return posts.find(post => post.id === parseInt(id));
     },
     posts(root, args, context, info) {
       return posts;

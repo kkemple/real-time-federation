@@ -9,7 +9,7 @@ module.exports = {
 
   Query: {
     author(parent, { id }, context, info) {
-      return authors.find(author => author.id === id);
+      return authors.find(author => author.id === parseInt(id));
     },
     authors(parent, args, context, info) {
       return authors;
