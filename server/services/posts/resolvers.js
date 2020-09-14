@@ -34,7 +34,7 @@ module.exports = {
       };
 
       posts.push(post);
-      redis.xadd("graphql_stream", "*", "event", "postAdded", "id", postID);
+      redis.xadd("graphql_stream", "*", "event", "POST_ADDED", "id", postID);
 
       return post;
     }

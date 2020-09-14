@@ -1,11 +1,10 @@
 require("dotenv").config();
 const { ApolloServer } = require("apollo-server");
 const { buildFederatedSchema } = require("@apollo/federation");
-const Redis = require("ioredis");
 
+const redis = require("./redis");
 const resolvers = require("./resolvers");
 const typeDefs = require("./typeDefs");
-const redis = new Redis(process.env.REDIS_PORT, process.env.REDIS_HOST);
 
 const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
 const server = new ApolloServer({ schema, context: { redis } });

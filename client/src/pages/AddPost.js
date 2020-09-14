@@ -2,24 +2,24 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 
-import { AddPost } from "../graphql/mutations";
+import { AddPost as AddPostMutation } from "../graphql/mutations";
 import { PostFields } from "../graphql/fragments";
 
-function NewPost() {
+function AddPost() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [completedMessage, setCompletedMessage] = useState("");
 
-  const [addPost] = useMutation(AddPost, {
+  const [addPost] = useMutation(AddPostMutation, {
     update(cache, { data: { addPost } }) {
       cache.modify({
         fields: {
-          posts(existingPosts = []) {
+          posts(existingPostRefs = []) {
             const newPostRef = cache.writeFragment({
               data: addPost,
               fragment: PostFields
             });
-            return [...existingPosts, newPostRef];
+            return [...existingPostRefs, newPostRef];
           }
         }
       });
@@ -33,6 +33,11 @@ function NewPost() {
 
   return (
     <div>
+      <nav>
+        <p>
+          <Link to="/">&larr; Back Home</Link>
+        </p>
+      </nav>
       <h1>Add a New Post</h1>
       <form
         onSubmit={event => {
@@ -75,4 +80,4 @@ function NewPost() {
   );
 }
 
-export default NewPost;
+export default AddPost;

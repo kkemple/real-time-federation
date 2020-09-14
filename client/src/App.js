@@ -2,9 +2,10 @@ import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import React from "react";
 
+import AddPost from "./pages/AddPost";
 import client from "./graphql/apollo";
 import Home from "./pages/Home";
-import NewPost from "./pages/NewPost";
+import RemoveAuthor from "./pages/RemoveAuthor";
 
 import "./App.css";
 
@@ -14,7 +15,8 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/post/new" component={NewPost} />
+          <Route exact path="/post/add" component={AddPost} />
+          <Route exact path="/author/remove" component={RemoveAuthor} />
           <Route path="*" component={Home} />
         </Switch>
       </Router>

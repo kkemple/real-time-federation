@@ -13,3 +13,9 @@ export const AddPost = gql`
     }
   }
 `;
+
+export const RemoveAuthor = gql`
+  mutation RemoveAuthor($id: ID!) {
+    removeAuthor(id: $id)
+  }
+`;

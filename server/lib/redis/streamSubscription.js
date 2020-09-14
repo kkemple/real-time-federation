@@ -20,14 +20,13 @@ async function subscribeStream(redis, stream, listener) {
     }
 
     const results = reply[stream];
-    const { length } = results;
 
-    if (!results.length) {
+    if (!results || (results && !results.length)) {
       continue;
     }
 
     listener(results);
-    lastID = results[length - 1].id;
+    lastID = results[results.length - 1].id;
   }
 }
 
