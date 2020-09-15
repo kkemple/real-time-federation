@@ -1,6 +1,8 @@
 const { gql } = require("apollo-server");
 
 module.exports = gql`
+  directive @subscribe(events: String) on QUERY
+
   type Post {
     id: ID!
     author: Author!

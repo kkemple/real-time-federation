@@ -12,7 +12,7 @@ export const GetPost = gql`
 `;
 
 export const GetPosts = gql`
-  query GetPosts {
+  query GetPosts @subscribe(events: "AUTHOR_REMOVED POST_ADDED") {
     posts {
       ...PostFields
     }
