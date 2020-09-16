@@ -1,7 +1,14 @@
 const { gql } = require("apollo-server");
 
 module.exports = gql`
-  directive @subscribe(events: String) on QUERY
+  enum StreamEvent {
+    AUTHOR_REMOVED
+    POST_ADDED
+  }
+
+  directive @_stream(payload: String, event: StreamEvent!) on FIELD_DEFINITION
+
+  directive @_live(events: [StreamEvent!]!) on QUERY
 
   type Author @key(fields: "id") {
     id: ID!
@@ -14,6 +21,6 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    removeAuthor(id: ID!): ID
+    removeAuthor(id: ID!): ID @_stream(payload: "id", event: AUTHOR_REMOVED)
   }
 `;

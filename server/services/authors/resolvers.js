@@ -17,7 +17,7 @@ module.exports = {
   },
 
   Mutation: {
-    removeAuthor(parent, { id }, { redis }, info) {
+    removeAuthor(parent, { id }, context, info) {
       const authorID = parseInt(id);
       const authorIndex = authors.findIndex(author => author.id === authorID);
 
@@ -26,15 +26,6 @@ module.exports = {
       }
 
       authors.splice(authorIndex, 1);
-      redis.xadd(
-        "graphql_stream",
-        "*",
-        "event",
-        "AUTHOR_REMOVED",
-        "id",
-        authorID
-      );
-
       return authorID;
     }
   }

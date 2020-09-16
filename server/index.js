@@ -4,25 +4,23 @@ const http = require("http");
 
 const { ApolloGateway } = require("@apollo/gateway");
 const { ApolloServer } = require("apollo-server");
-const Redis = require("ioredis");
 const socketIo = require("socket.io");
 
-require("./lib/redis/streamTransformers");
-const { subscribeStream } = require("./lib/redis/streamSubscription");
+require("./redis/utils/streamTransformers");
+const redis = require("./redis");
+const subscribeStream = require("./redis/utils/streamSubscription");
 
 /* Socket.io */
 
 const httpServer = http.createServer();
 const io = socketIo(httpServer);
-httpServer.listen(5000);
-
-/* Redis */
-
-const redis = new Redis(process.env.REDIS_PORT, process.env.REDIS_HOST);
+httpServer.listen(process.env.SOCKET_IO_PORT);
 
 subscribeStream(redis, "graphql_stream", results => {
-  results.forEach(({ id: redisID, data: { event, id } }) => {
-    io.emit(event, { id, timestamp: redisID.split("-")[0] });
+  results.forEach(({ data, id }) => {
+    const dataCopy = JSON.parse(JSON.stringify(data));
+    delete dataCopy.event;
+    io.emit(data.event, { ...dataCopy, timestamp: id.split("-")[0] });
   });
 });
 

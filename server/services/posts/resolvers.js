@@ -23,7 +23,7 @@ module.exports = {
   },
 
   Mutation: {
-    addPost(root, { authorID, content, title }, { redis }, info) {
+    addPost(root, { authorID, content, title }, context, info) {
       const postID = posts.length + 1;
       const post = {
         authorID,
@@ -34,8 +34,6 @@ module.exports = {
       };
 
       posts.push(post);
-      redis.xadd("graphql_stream", "*", "event", "POST_ADDED", "id", postID);
-
       return post;
     }
   }

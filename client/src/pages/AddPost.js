@@ -3,7 +3,6 @@ import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 
 import { AddPost as AddPostMutation } from "../graphql/mutations";
-import { PostFields } from "../graphql/fragments";
 
 function AddPost() {
   const [content, setContent] = useState("");
@@ -11,19 +10,6 @@ function AddPost() {
   const [completedMessage, setCompletedMessage] = useState("");
 
   const [addPost] = useMutation(AddPostMutation, {
-    update(cache, { data: { addPost } }) {
-      cache.modify({
-        fields: {
-          posts(existingPostRefs = []) {
-            const newPostRef = cache.writeFragment({
-              data: addPost,
-              fragment: PostFields
-            });
-            return [...existingPostRefs, newPostRef];
-          }
-        }
-      });
-    },
     onCompleted() {
       setContent("");
       setTitle("");

@@ -1,5 +1,3 @@
-// Reference: https://github.com/luin/ioredis/issues/747#issuecomment-500735545
-
 async function subscribeStream(redis, stream, listener) {
   let lastID = "$";
 
@@ -30,6 +28,4 @@ async function subscribeStream(redis, stream, listener) {
   }
 }
 
-module.exports = {
-  subscribeStream
-};
+module.exports = subscribeStream;

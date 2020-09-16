@@ -1,5 +1,3 @@
-// Reference: https://github.com/luin/ioredis/issues/747#issuecomment-500735545
-
 const Redis = require("ioredis");
 
 function parseObjectResponse(reply, customParser = null) {

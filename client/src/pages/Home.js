@@ -1,59 +1,12 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React from "react";
 
-import { GetPost, GetPosts } from "../graphql/queries";
-import useSocket from "../hooks/useSocket";
-
-const socketUrl = process.env.REACT_APP_SOCKETIO_URL;
+import { GetPosts } from "../graphql/queries";
 
 function Home() {
-  const { client, data, loading } = useQuery(GetPosts);
-  const { subscribeToEvent } = useSocket(socketUrl);
-
-  useEffect(() => {
-    // Update feed when post added
-    subscribeToEvent("POST_ADDED", (err, postEvent) => {
-      if (err) {
-        return;
-      }
-
-      console.log("New POST_ADDED event:", postEvent);
-
-      if (postEvent) {
-        client
-          .query({ query: GetPost, variables: { id: postEvent.id } })
-          .then(result => {
-            const currentPosts = client.readQuery({ query: GetPosts });
-            client.writeQuery({
-              query: GetPosts,
-              data: { posts: [...currentPosts.posts, result.data.post] }
-            });
-          });
-      }
-    });
-
-    // Update feed when author and their posts are removed
-    subscribeToEvent("AUTHOR_REMOVED", (err, authorEvent) => {
-      if (err) {
-        return;
-      }
-
-      console.log("New AUTHOR_REMOVED event:", authorEvent);
-
-      if (authorEvent) {
-        const { posts: currentPosts } = client.readQuery({ query: GetPosts });
-        const updatedPosts = [...currentPosts].filter(
-          post => post.author.id !== authorEvent.id
-        );
-        client.writeQuery({
-          query: GetPosts,
-          data: { posts: updatedPosts }
-        });
-      }
-    });
-  }, [client, subscribeToEvent]);
+  const { data, loading } = useQuery(GetPosts);
 
   if (loading) {
     return <p>Loading...</p>;

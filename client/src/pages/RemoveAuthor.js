@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 
-import { GetPosts } from "../graphql/queries";
 import { RemoveAuthor as RemoveAuthorMutation } from "../graphql/mutations";
 
 function RemoveAuthor() {
@@ -10,7 +9,6 @@ function RemoveAuthor() {
   const [completedMessage, setCompletedMessage] = useState("");
 
   const [removeAuthor] = useMutation(RemoveAuthorMutation, {
-    refetchQueries: [{ query: GetPosts }],
     onCompleted() {
       setCompletedMessage("The author named Alice was deleted");
     }
