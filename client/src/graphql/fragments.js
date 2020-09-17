@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const NewPostFields = gql`
-  fragment PostFields on Post {
+  fragment NewPostFields on Post {
     author {
       id
     }
