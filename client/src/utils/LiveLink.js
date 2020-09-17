@@ -40,8 +40,6 @@ class LiveLink extends ApolloLink {
   }
 
   request(operation, forward) {
-    // console.log("operation", operation);
-
     const { query } = operation;
     const isSubscribedQuery = hasDirectives(["_live"], query);
 
@@ -51,7 +49,6 @@ class LiveLink extends ApolloLink {
 
     const observable = forward(operation);
     const { cache } = operation.getContext();
-    // console.log("cache", cache);
 
     this.processEvents(operation, cache);
 

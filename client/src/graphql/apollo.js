@@ -6,7 +6,7 @@ import operationPolicies from "./operationPolicies";
 
 // Create event subscription link
 const socket = io(process.env.REACT_APP_SOCKETIO_URL, {
-  transports: ["websocket", "polling"]
+  reconnection: true
 });
 const liveLink = new LiveLink(socket, operationPolicies);
 
