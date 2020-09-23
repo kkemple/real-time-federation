@@ -2,12 +2,12 @@ require("dotenv").config();
 const { ApolloServer, SchemaDirectiveVisitor } = require("apollo-server");
 const { buildFederatedSchema } = require("@apollo/federation");
 
+const PublishDirective = require("../shared/PublishDirective");
 const resolvers = require("./resolvers");
-const StreamDirective = require("../shared/StreamDirective");
 const typeDefs = require("./typeDefs");
 
 const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
-const directives = { _stream: StreamDirective };
+const directives = { _publish: PublishDirective };
 SchemaDirectiveVisitor.visitSchemaDirectives(schema, directives);
 
 const server = new ApolloServer({ schema });

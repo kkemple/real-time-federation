@@ -3,14 +3,14 @@ const { ApolloServer, SchemaDirectiveVisitor } = require("apollo-server");
 const { buildFederatedSchema } = require("@apollo/federation");
 
 let posts = require("./data");
+const PublishDirective = require("../shared/PublishDirective");
 const redis = require("../../redis");
 const resolvers = require("./resolvers");
-const StreamDirective = require("../shared/StreamDirective");
 const subscribeStream = require("../../redis/utils/streamSubscription");
 const typeDefs = require("./typeDefs");
 
 const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
-const directives = { _stream: StreamDirective };
+const directives = { _publish: PublishDirective };
 SchemaDirectiveVisitor.visitSchemaDirectives(schema, directives);
 
 const server = new ApolloServer({ schema, context: { redis } });

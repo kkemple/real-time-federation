@@ -3,7 +3,7 @@ const { SchemaDirectiveVisitor } = require("apollo-server");
 
 const redis = require("../../redis");
 
-class StreamDirective extends SchemaDirectiveVisitor {
+class PublishDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
     const { resolve = defaultFieldResolver } = field;
     const { payload, event } = this.args;
@@ -32,4 +32,4 @@ class StreamDirective extends SchemaDirectiveVisitor {
   }
 }
 
-module.exports = StreamDirective;
+module.exports = PublishDirective;
