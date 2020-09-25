@@ -58,27 +58,17 @@ To successfully implement this architecture, the following assumptions must be s
 
 ## Usage
 
-### GraphQL Server
+Steps to configure and run (using Docker):
 
-_A Redis (5.x) server must be running locally prior to starting the GraphQL server._
-
-Add a `.env` file using the `server/.env.sample` file as a template and then run:
-
-```sh
-cd server && npm i && npm run server
-```
+1. Add a `.env` file to the `server` directory using the `server/.env.sample` file as a template
+2. Add a `.env` file to the `client` directory using the `client/.env.sample` file as a template
+3. Run `docker-compose up --build` from the root directory of this repository
 
 GraphQL Playground will be available at [http://localhost:4000/graphql](http://localhost:4000/graphql).
 
-### Client
-
-Add a `.env` file using the `client/.env.sample` file as a template and then run:
-
-```sh
-cd client && npm i && npm start
-```
-
 A React app will be available at [http://localhost:3000](http://localhost:3000).
+
+_Please note that this repository is meant for demonstration/development purposes only._
 
 ## Other Considerations
 
