@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "server": "concurrently -k npm:server:*",
-    "server:authors": "nodemon ./services/authors/index.js",
-    "server:posts": "nodemon ./services/posts/index.js",
-    "server:gateway": "wait-on tcp:4001 tcp:4002 && nodemon ./index.js"
+    "server:authors": "nodemon ./src/services/authors/index.js",
+    "server:posts": "nodemon ./src/services/posts/index.js",
+    "server:gateway": "wait-on tcp:4001 tcp:4002 && nodemon ./src/index.js"
   },
   "keywords": [],
   "author": "",
