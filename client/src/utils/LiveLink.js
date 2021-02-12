@@ -2,10 +2,10 @@ import { ApolloLink, Observable } from "@apollo/client";
 import { getMainDefinition, hasDirectives } from "@apollo/client/utilities";
 
 class LiveLink extends ApolloLink {
-  constructor(socket, operationPolicies) {
+  constructor(pusherChannel, operationPolicies) {
     super();
 
-    this.socket = socket;
+    this.pusher = pusherChannel;
     this.operationPolicies = operationPolicies;
   }
 
@@ -13,16 +13,16 @@ class LiveLink extends ApolloLink {
     const { operationName, query } = operation;
     const mainDefinition = getMainDefinition(query);
     const liveDirective = mainDefinition.directives.find(
-      directive => directive.name.value === "_live"
+      (directive) => directive.name.value === "_live"
     );
     const {
-      value: { values: eventValues }
-    } = liveDirective.arguments.find(arg => arg.name.value === "events");
-    const eventNames = eventValues.map(event => event.value);
+      value: { values: eventValues },
+    } = liveDirective.arguments.find((arg) => arg.name.value === "events");
+    const eventNames = eventValues.map((event) => event.value);
 
-    eventNames.forEach(eventName => {
-      if (this.socket) {
-        this.socket.on(eventName, data => {
+    eventNames.forEach((eventName) => {
+      if (this.pusher) {
+        this.pusher.bind(eventName, (data) => {
           const policy = this.operationPolicies[operationName].events[
             eventName
           ];
@@ -52,17 +52,15 @@ class LiveLink extends ApolloLink {
 
     this.processEvents(operation, cache);
 
-    return new Observable(observer => {
+    return new Observable((observer) => {
       // Pass the request down the chain
       const subscription = observable.subscribe({
         next: observer.next.bind(observer),
         error: observer.error.bind(observer),
-        complete: observer.complete.bind(observer)
+        complete: observer.complete.bind(observer),
       });
 
       return () => {
-        // this.socket && this.socket.removeAllListeners();
-        // this.socket && this.socket.close();
         subscription.unsubscribe();
       };
     });

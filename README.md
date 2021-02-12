@@ -6,8 +6,8 @@ Apollo Federation doesn’t provide support [subscription operations](https://ww
 
 For this solution, it is helpful to view a data graph from the perspective of **state**. There are three spec-defined ways to interact with the state of a federated (or monolithic) graph:
 
-- **Query** - Request the state of a graph at a point-in-time *without side effects*
-- **Mutation** - Attempt to change state within a graph and return a specific state to the client *within well-understood side effects*
+- **Query** - Request the state of a graph at a point-in-time _without side effects_
+- **Mutation** - Attempt to change state within a graph and return a specific state to the client _within well-understood side effects_
 - **Subscription** - Subscribe to changes in the state of the graph in a provider-defined way
 
 The proposed solution below is an alternative to traditional GraphQL subscription that aims to separate and address specific concerns:
@@ -22,7 +22,7 @@ By using a custom `@_publish` [schema directive](https://spec.graphql.org/June20
 
 This approach has no specific requirements for the type of event store that’s used to save and broadcast published events. A basic in-memory pub/sub mechanism may be used or a more advanced system that indefinitely persists the event-related data may also be implemented. Ideally, events are published to the event store in an append-only log format.
 
-Implementing services do not handle any custom logic inside resolvers to publish events to the event store. Instead, once the `@_publish` directive has been applied to a mutation in the schema, this directive will handle the event publication along including any relevant field-value pairs derived from the directive’s `payload` argument and the data returned from the successful mutation result.
+Implementing services do not handle any custom logic inside resolvers to publish events to the event store. Instead, once the `@_publish` directive has been applied to a mutation in the schema, this directive will handle the event publication and the data returned from the successful mutation result.
 
 This architecture also requires an additional transport layer for pushing event-related messages to clients through a persistent connection (such as a WebSocket connection or a vendor providing real-time SDKs). As events are received and processed by the GraphQL client, the client updates its cache with the newly available data and re-renders applicable user interfaces accordingly.
 
@@ -64,7 +64,11 @@ Steps to configure and run (using Docker):
 2. Add a `.env` file to the `client` directory using the `client/.env.sample` file as a template
 3. Run `docker-compose up --build` from the root directory of this repository
 
-GraphQL Playground will be available at [http://localhost:4000/graphql](http://localhost:4000/graphql).
+### Set Up Your Developer Graph
+
+You can use the [Apollo Studio Explorer](https://www.apollographql.com/docs/studio/dev-graphs/#creating-a-dev-graph) to explore and query your graph.
+
+> Your local federated graph is at `http://localhost:4000/graphql`.
 
 A React app will be available at [http://localhost:3000](http://localhost:3000).
 

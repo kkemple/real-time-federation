@@ -6,10 +6,7 @@ module.exports = gql`
     POST_ADDED
   }
 
-  directive @_publish(
-    payload: String
-    event: PublishableEvent!
-  ) on FIELD_DEFINITION
+  directive @_publish(event: PublishableEvent!) on FIELD_DEFINITION
 
   directive @_live(events: [PublishableEvent!]!) on QUERY
 
@@ -33,9 +30,6 @@ module.exports = gql`
 
   extend type Mutation {
     addPost(authorID: ID!, content: String, title: String): Post
-    @_publish(
-      payload: "authorID content id publishedAt title"
-      event: POST_ADDED
-    )
+      @_publish(event: POST_ADDED)
   }
 `;

@@ -6,10 +6,7 @@ module.exports = gql`
     POST_ADDED
   }
 
-  directive @_publish(
-    payload: String
-    event: PublishableEvent!
-  ) on FIELD_DEFINITION
+  directive @_publish(event: PublishableEvent!) on FIELD_DEFINITION
 
   directive @_live(events: [PublishableEvent!]!) on QUERY
 
@@ -24,6 +21,6 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    removeAuthor(id: ID!): ID @_publish(payload: "id", event: AUTHOR_REMOVED)
+    removeAuthor(id: ID!): ID @_publish(event: AUTHOR_REMOVED)
   }
 `;
